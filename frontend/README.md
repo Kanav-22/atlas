@@ -1,36 +1,70 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+# Atlas — AI Travel Intelligence Agent
 
-## Getting Started
+Ask anything about travel in plain English. Atlas finds real flights, hotels, and live weather using an agentic AI pipeline.
 
-First, run the development server:
+**Live Demo:** https://atlas-smoky-omega.vercel.app
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
+---
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+## What it does
 
-You can start editing the page by modifying `app/page.js`. The page auto-updates as you edit the file.
+Atlas is a full-stack AI travel assistant. Type a question like "Find me flights from Delhi to Mumbai on June 15" or "Hotels in Goa from June 20 to 25" — the AI agent understands your intent, calls the right data sources, and responds in natural language.
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+---
 
-## Learn More
+## Tech Stack
 
-To learn more about Next.js, take a look at the following resources:
+**Backend:** Python, FastAPI, Groq API (Llama 3.3 70B), LLM Function Calling, Sky Scrapper API, OpenWeatherMap API
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+**Frontend:** Next.js, React, Tailwind CSS
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+**Deployment:** Backend on Render, Frontend on Vercel
 
-## Deploy on Vercel
+---
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+## Key Features
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+- Agentic AI routing — LLM decides which API to call based on user intent
+- Real-time data — live flight prices, hotel availability, weather forecasts
+- Natural language interface — no forms, just conversation
+- Multi-tool support — flights, hotels, weather in one chat
+
+---
+
+## Architecture
+
+User sends a plain English query → Next.js frontend → FastAPI backend → Groq LLM agent decides which tool to call → Sky Scrapper API (flights/hotels) or OpenWeatherMap (weather) → natural language response back to user
+
+---
+
+## Local Setup
+
+Clone the repo, then:
+
+Backend:
+    cd backend
+    python -m venv venv
+    venv\Scripts\activate
+    pip install -r requirements.txt
+    Create .env with your API keys
+    uvicorn main:app --reload
+
+Frontend:
+    cd frontend
+    npm install
+    Create .env.local with NEXT_PUBLIC_API_URL
+    npm run dev
+
+---
+
+## Environment Variables
+
+Backend .env:
+    RAPIDAPI_KEY=your_key
+    RAPIDAPI_HOST=sky-scrapper.p.rapidapi.com
+    GROQ_API_KEY=your_key
+    OPENWEATHER_KEY=your_key
+    AVIATIONSTACK_KEY=your_key
+
+Frontend .env.local:
+    NEXT_PUBLIC_API_URL=http://127.0.0.1:8000
