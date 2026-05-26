@@ -1,4 +1,4 @@
-'use client';
+﻿'use client';
 import { useState } from 'react';
 
 export default function VisaPage() {
@@ -49,182 +49,99 @@ export default function VisaPage() {
     const html = text
       .replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>')
       .replace(/\n/g, '<br/>');
-    return <p className="text-sm leading-relaxed text-gray-300" dangerouslySetInnerHTML={{ __html: html }} />;
+    return <p style={{ fontSize: '14px', lineHeight: 1.8, color: '#94a3b8', fontFamily: "'Sora', sans-serif" }} dangerouslySetInnerHTML={{ __html: html }} />;
   };
 
+  const quickCountries = ['USA', 'UK', 'Japan', 'Italy', 'Dubai', 'Thailand', 'Canada', 'Australia'];
+
   return (
-    <main className="min-h-screen bg-gray-950 px-4 py-8">
-      <div className="max-w-3xl mx-auto">
+    <main style={{ minHeight: '100vh', background: '#080c14', color: '#f8fafc', fontFamily: "'Sora', sans-serif" }}>
+      <style>{`
+        @import url('https://fonts.googleapis.com/css2?family=Sora:wght@400;500;600;700&display=swap');
+        .visa-hero { padding: 60px 24px 40px; max-width: 700px; margin: 0 auto; text-align: center; }
+        .visa-tag { display: inline-block; padding: 5px 14px; border-radius: 9999px; border: 1px solid rgba(16,185,129,0.3); background: rgba(16,185,129,0.08); color: #10b981; font-size: 12px; font-weight: 500; margin-bottom: 20px; }
+        .visa-title { font-size: clamp(32px,5vw,52px); font-weight: 700; letter-spacing: -1.5px; line-height: 1.05; margin-bottom: 16px; color: #f8fafc; }
+        .visa-sub { font-size: 15px; color: #475569; line-height: 1.6; margin-bottom: 40px; }
+        .search-row { display: flex; gap: 8px; max-width: 560px; margin: 0 auto 16px; }
+        .country-input { flex: 1; background: rgba(255,255,255,0.04); border: 1px solid rgba(255,255,255,0.08); border-radius: 12px; padding: 14px 18px; color: #f8fafc; font-size: 14px; font-family: 'Sora',sans-serif; outline: none; transition: border-color 0.2s; }
+        .country-input::placeholder { color: #334155; }
+        .country-input:focus { border-color: rgba(16,185,129,0.4); }
+        .check-btn { background: #10b981; border: none; border-radius: 12px; padding: 14px 22px; color: #080c14; font-size: 14px; font-weight: 600; font-family: 'Sora',sans-serif; cursor: pointer; transition: background 0.2s; white-space: nowrap; }
+        .check-btn:hover { background: #34d399; }
+        .check-btn:disabled { opacity: 0.5; cursor: not-allowed; }
+        .country-pills { display: flex; flex-wrap: wrap; gap: 8px; justify-content: center; max-width: 560px; margin: 0 auto; }
+        .country-pill { padding: 6px 14px; border-radius: 8px; border: 1px solid rgba(255,255,255,0.06); background: rgba(255,255,255,0.02); color: #475569; font-size: 12px; font-family: 'Sora',sans-serif; cursor: pointer; transition: all 0.2s; }
+        .country-pill:hover { border-color: rgba(16,185,129,0.3); color: #94a3b8; }
+        .content-area { max-width: 700px; margin: 40px auto 0; padding: 0 24px 80px; }
+        .result-card { background: rgba(255,255,255,0.02); border: 1px solid rgba(255,255,255,0.06); border-radius: 16px; padding: 28px; margin-bottom: 16px; }
+        .result-label { display: inline-block; padding: 4px 12px; border-radius: 6px; background: rgba(16,185,129,0.1); border: 1px solid rgba(16,185,129,0.2); color: #10b981; font-size: 11px; font-weight: 600; letter-spacing: 0.5px; text-transform: uppercase; margin-bottom: 16px; }
+        .upload-zone { border: 1px dashed rgba(255,255,255,0.1); border-radius: 12px; padding: 40px 24px; text-align: center; cursor: pointer; transition: all 0.2s; }
+        .upload-zone:hover { border-color: rgba(16,185,129,0.3); background: rgba(16,185,129,0.02); }
+        .file-item { display: flex; align-items: center; gap: 10px; padding: 10px 14px; background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.06); border-radius: 8px; margin-top: 8px; font-size: 13px; color: #94a3b8; }
+        .analyze-btn { width: 100%; margin-top: 12px; background: rgba(16,185,129,0.1); border: 1px solid rgba(16,185,129,0.2); border-radius: 10px; padding: 14px; color: #10b981; font-size: 14px; font-weight: 600; font-family: 'Sora',sans-serif; cursor: pointer; transition: all 0.2s; }
+        .analyze-btn:hover { background: rgba(16,185,129,0.15); }
+        .analyze-btn:disabled { opacity: 0.4; cursor: not-allowed; }
+        .analysis-card { background: rgba(255,255,255,0.02); border: 1px solid rgba(255,255,255,0.06); border-radius: 16px; padding: 28px; }
+        .status-ready { background: rgba(16,185,129,0.1); border: 1px solid rgba(16,185,129,0.2); color: #10b981; }
+        .status-incomplete { background: rgba(239,68,68,0.1); border: 1px solid rgba(239,68,68,0.2); color: #ef4444; }
+        .status-review { background: rgba(245,158,11,0.1); border: 1px solid rgba(245,158,11,0.2); color: #f59e0b; }
+        .doc-item { display: flex; align-items: flex-start; gap: 10px; padding: 10px 0; border-bottom: 1px solid rgba(255,255,255,0.04); font-size: 13px; color: #94a3b8; line-height: 1.5; }
+      `}</style>
 
-        {/* Header */}
-        <div className="flex items-center gap-3 mb-8">
-          <a href="/" className="text-gray-400 hover:text-white transition-colors">
-            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={2} stroke="currentColor" className="w-5 h-5">
-              <path strokeLinecap="round" strokeLinejoin="round" d="M10.5 19.5L3 12m0 0l7.5-7.5M3 12h18" />
-            </svg>
-          </a>
-          <div>
-            <h1 className="text-white font-semibold text-xl">Visa Intelligence</h1>
-            <p className="text-gray-500 text-sm">Check requirements + verify your documents</p>
-          </div>
+      <div className="visa-hero">
+        <div className="visa-tag">Visa Intelligence</div>
+        <h1 className="visa-title">Know exactly what<br />you need to travel</h1>
+        <p className="visa-sub">Requirements for Indian passport holders. Upload your documents to see what is ready and what is missing.</p>
+        <div className="search-row">
+          <input type="text" className="country-input" value={country} onChange={e => setCountry(e.target.value)} onKeyDown={e => e.key === 'Enter' && fetchRequirements()} placeholder="Where are you going? e.g. Japan, Italy, USA..." />
+          <button className="check-btn" onClick={fetchRequirements} disabled={loading}>{loading ? 'Checking...' : 'Check'}</button>
         </div>
-
-        {/* Country Input */}
-        <div className="bg-gray-900 border border-gray-800 rounded-2xl p-6 mb-6">
-          <label className="text-gray-400 text-sm mb-2 block">Where are you travelling?</label>
-          <div className="flex gap-3">
-            <input
-              type="text"
-              value={country}
-              onChange={e => setCountry(e.target.value)}
-              onKeyDown={e => e.key === 'Enter' && fetchRequirements()}
-              placeholder="e.g. Japan, Italy, USA, Dubai..."
-              className="flex-1 bg-gray-800 text-white border border-gray-700 rounded-xl px-4 py-3 focus:outline-none focus:border-blue-500 transition-colors placeholder-gray-500 text-sm"
-            />
-            <button
-              onClick={fetchRequirements}
-              disabled={loading}
-              className="bg-blue-600 hover:bg-blue-700 disabled:opacity-50 text-white rounded-xl px-5 py-3 text-sm font-medium transition-colors"
-            >
-              {loading ? 'Searching...' : 'Check'}
-            </button>
-          </div>
-          <div className="flex flex-wrap gap-2 mt-3">
-            {['USA', 'UK', 'Japan', 'Italy', 'Dubai', 'Thailand'].map(c => (
-              <button key={c} onClick={() => setCountry(c)}
-                className="text-xs text-gray-400 hover:text-white bg-gray-800 hover:bg-gray-700 border border-gray-700 rounded-lg px-3 py-1.5 transition-all">
-                {c}
-              </button>
-            ))}
-          </div>
+        <div className="country-pills">
+          {quickCountries.map(c => (<button key={c} className="country-pill" onClick={() => setCountry(c)}>{c}</button>))}
         </div>
+      </div>
 
-        {/* Requirements Result */}
+      <div className="content-area">
         {requirements && (
-          <div className="bg-gray-900 border border-gray-800 rounded-2xl p-6 mb-6">
-            {requirements.error ? (
-              <p className="text-red-400 text-sm">{requirements.error}</p>
-            ) : (
-              <>
-                <div className="flex items-center gap-2 mb-4">
-                  <span className="text-blue-400 text-xs font-medium bg-blue-950 border border-blue-800 rounded-lg px-3 py-1">
-                    {requirements.normalized_query !== requirements.country
-                      ? `Showing Schengen requirements for ${requirements.country}`
-                      : requirements.country}
-                  </span>
-                </div>
-                {renderContent(requirements.answer)}
-              </>
+          <div className="result-card">
+            {requirements.error ? <p style={{color:'#ef4444',fontSize:'14px'}}>{requirements.error}</p> : (
+              <><div className="result-label">{requirements.normalized_query !== requirements.country ? 'Schengen' : requirements.country}</div>{renderContent(requirements.answer)}</>
             )}
           </div>
         )}
 
-        {/* Document Upload */}
         {requirements && !requirements.error && (
-          <div className="bg-gray-900 border border-gray-800 rounded-2xl p-6 mb-6">
-            <h2 className="text-white font-medium mb-1">Check your documents</h2>
-            <p className="text-gray-500 text-sm mb-4">Upload your PDFs — we'll tell you what's ready and what's missing</p>
-
-            <div
-              className="border-2 border-dashed border-gray-700 rounded-xl p-8 text-center cursor-pointer hover:border-blue-500 transition-colors"
-              onClick={() => document.getElementById('file-input').click()}
-            >
-              <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-8 h-8 text-gray-500 mx-auto mb-2">
-                <path strokeLinecap="round" strokeLinejoin="round" d="M3 16.5v2.25A2.25 2.25 0 005.25 21h13.5A2.25 2.25 0 0021 18.75V16.5m-13.5-9L12 3m0 0l4.5 4.5M12 3v13.5" />
-              </svg>
-              <p className="text-gray-400 text-sm">Click to upload PDFs</p>
-              <p className="text-gray-600 text-xs mt-1">Passport, bank statements, ITR, employment letter...</p>
-              <input
-                id="file-input"
-                type="file"
-                multiple
-                accept=".pdf"
-                className="hidden"
-                onChange={e => setFiles(Array.from(e.target.files))}
-              />
+          <div className="result-card">
+            <div style={{fontSize:'16px',fontWeight:600,color:'#f1f5f9',marginBottom:'4px'}}>Document checker</div>
+            <div style={{fontSize:'13px',color:'#334155',marginBottom:'16px'}}>Upload your PDFs to cross-reference against requirements</div>
+            <div className="upload-zone" onClick={() => document.getElementById('visa-file-input').click()}>
+              <div style={{fontSize:'24px',marginBottom:'8px'}}>&#128196;</div>
+              <div style={{fontSize:'15px',fontWeight:500,color:'#f1f5f9',marginBottom:'6px'}}>Click to upload PDFs</div>
+              <div style={{fontSize:'12px',color:'#334155'}}>Passport, bank statements, ITR, employment letter...</div>
+              <input id="visa-file-input" type="file" multiple accept=".pdf" style={{display:'none'}} onChange={e => setFiles(Array.from(e.target.files))} />
             </div>
-
-            {files.length > 0 && (
-              <div className="mt-3 space-y-2">
-                {files.map((f, i) => (
-                  <div key={i} className="flex items-center gap-2 text-sm text-gray-400 bg-gray-800 rounded-lg px-3 py-2">
-                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-4 h-4 text-blue-400">
-                      <path strokeLinecap="round" strokeLinejoin="round" d="M19.5 14.25v-2.625a3.375 3.375 0 00-3.375-3.375h-1.5A1.125 1.125 0 0113.5 7.125v-1.5a3.375 3.375 0 00-3.375-3.375H8.25m0 12.75h7.5m-7.5 3H12M10.5 2.25H5.625c-.621 0-1.125.504-1.125 1.125v17.25c0 .621.504 1.125 1.125 1.125h12.75c.621 0 1.125-.504 1.125-1.125V11.25a9 9 0 00-9-9z" />
-                    </svg>
-                    {f.name}
-                  </div>
-                ))}
-                <button
-                  onClick={analyzeDocuments}
-                  disabled={analyzing}
-                  className="w-full bg-blue-600 hover:bg-blue-700 disabled:opacity-50 text-white rounded-xl py-3 text-sm font-medium transition-colors mt-2"
-                >
-                  {analyzing ? 'Analyzing...' : `Analyze ${files.length} document${files.length > 1 ? 's' : ''}`}
-                </button>
-              </div>
-            )}
+            {files.length > 0 && (<>
+              {files.map((f,i) => (<div key={i} className="file-item"><span style={{color:'#10b981'}}>&#128206;</span>{f.name}</div>))}
+              <button className="analyze-btn" onClick={analyzeDocuments} disabled={analyzing}>{analyzing ? 'Analyzing...' : 'Analyze ' + files.length + ' document' + (files.length > 1 ? 's' : '')}</button>
+            </>)}
           </div>
         )}
 
-        {/* Analysis Results */}
         {analysis && (
-          <div className="bg-gray-900 border border-gray-800 rounded-2xl p-6">
-            <div className="flex items-center justify-between mb-4">
-              <h2 className="text-white font-medium">Document Analysis</h2>
-              <span className={`text-xs font-medium rounded-lg px-3 py-1 border ${
-                analysis.overall_status === 'ready'
-                  ? 'text-green-400 bg-green-950 border-green-800'
-                  : analysis.overall_status === 'incomplete'
-                  ? 'text-red-400 bg-red-950 border-red-800'
-                  : 'text-amber-400 bg-amber-950 border-amber-800'
-              }`}>
-                {analysis.overall_status === 'ready' ? '✅ Ready' :
-                 analysis.overall_status === 'incomplete' ? '❌ Incomplete' : '⚠️ Needs Review'}
-              </span>
+          <div className="analysis-card">
+            <div style={{display:'flex',justifyContent:'space-between',alignItems:'center',marginBottom:'20px'}}>
+              <div style={{fontSize:'16px',fontWeight:600,color:'#f1f5f9'}}>Document Analysis</div>
+              <div className={analysis.overall_status === 'ready' ? 'status-ready' : analysis.overall_status === 'incomplete' ? 'status-incomplete' : 'status-review'} style={{padding:'5px 12px',borderRadius:'6px',fontSize:'12px',fontWeight:600}}>
+                {analysis.overall_status === 'ready' ? 'Ready' : analysis.overall_status === 'incomplete' ? 'Incomplete' : 'Needs Review'}
+              </div>
             </div>
-
-            {analysis.summary && (
-              <p className="text-gray-400 text-sm mb-4">{analysis.summary}</p>
-            )}
-
-            {analysis.fulfilled?.length > 0 && (
-              <div className="mb-4">
-                <p className="text-green-400 text-xs font-medium mb-2">✅ FULFILLED</p>
-                {analysis.fulfilled.map((item, i) => (
-                  <div key={i} className="flex items-start gap-2 text-sm text-gray-300 mb-1">
-                    <span className="text-green-400 mt-0.5">✓</span>
-                    <span><strong>{item.document}</strong> — {item.detail}</span>
-                  </div>
-                ))}
-              </div>
-            )}
-
-            {analysis.missing?.length > 0 && (
-              <div className="mb-4">
-                <p className="text-red-400 text-xs font-medium mb-2">❌ MISSING</p>
-                {analysis.missing.map((item, i) => (
-                  <div key={i} className="flex items-start gap-2 text-sm text-gray-300 mb-1">
-                    <span className="text-red-400 mt-0.5">✗</span>
-                    <span><strong>{item.document}</strong> — {item.detail}</span>
-                  </div>
-                ))}
-              </div>
-            )}
-
-            {analysis.warnings?.length > 0 && (
-              <div>
-                <p className="text-amber-400 text-xs font-medium mb-2">⚠️ WARNINGS</p>
-                {analysis.warnings.map((item, i) => (
-                  <div key={i} className="flex items-start gap-2 text-sm text-gray-300 mb-1">
-                    <span className="text-amber-400 mt-0.5">!</span>
-                    <span><strong>{item.document}</strong> — {item.detail}</span>
-                  </div>
-                ))}
-              </div>
-            )}
+            {analysis.summary && <p style={{fontSize:'13px',color:'#475569',lineHeight:1.7,marginBottom:'16px',paddingBottom:'16px',borderBottom:'1px solid rgba(255,255,255,0.04)'}}>{analysis.summary}</p>}
+            {analysis.fulfilled?.length > 0 && (<><div style={{fontSize:'11px',fontWeight:600,letterSpacing:'1px',textTransform:'uppercase',color:'#10b981',marginBottom:'10px',marginTop:'16px'}}>Fulfilled</div>{analysis.fulfilled.map((item,i) => (<div key={i} className="doc-item"><span style={{color:'#10b981'}}>&#10003;</span><span><strong style={{color:'#f1f5f9'}}>{item.document}</strong> - {item.detail}</span></div>))}</>)}
+            {analysis.missing?.length > 0 && (<><div style={{fontSize:'11px',fontWeight:600,letterSpacing:'1px',textTransform:'uppercase',color:'#ef4444',marginBottom:'10px',marginTop:'16px'}}>Missing</div>{analysis.missing.map((item,i) => (<div key={i} className="doc-item"><span style={{color:'#ef4444'}}>&#10007;</span><span><strong style={{color:'#f1f5f9'}}>{item.document}</strong> - {item.detail}</span></div>))}</>)}
+            {analysis.warnings?.length > 0 && (<><div style={{fontSize:'11px',fontWeight:600,letterSpacing:'1px',textTransform:'uppercase',color:'#f59e0b',marginBottom:'10px',marginTop:'16px'}}>Warnings</div>{analysis.warnings.map((item,i) => (<div key={i} className="doc-item"><span style={{color:'#f59e0b'}}>!</span><span><strong style={{color:'#f1f5f9'}}>{item.document}</strong> - {item.detail}</span></div>))}</>)}
           </div>
         )}
-
+        <p style={{fontSize:'11px',color:'#1e293b',textAlign:'center',marginTop:'24px'}}>Always verify with the official embassy website before applying.</p>
       </div>
     </main>
   );
